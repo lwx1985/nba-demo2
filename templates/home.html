@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+
+{% block title %}欢迎来到NBA-data {% endblock %}
+{%load staticfiles%}
+
+
+{% block js %}
+
+<script>
+    {% for row in east %}
+    $(document).ready(
+
+        function(){
+        var r1 = {{row.win}};
+        var r2 = r1/82
+        rate = r2*100;
+        rate =rate.toFixed(1);
+        rate = rate +'%';
+      $("#{{row.id}}").html(rate);
+    }
+
+    );
+    {% endfor %}
+
+        {% for row in west %}
+    $(document).ready(
+
+        function(){
+        var r1 = {{row.win}};
+        var r2 = r1/82
+        rate = r2*100;
+        rate =rate.toFixed(1);
+        rate = rate +'%';
+      $("#{{row.id}}").html(rate);
+    }
+
+    );
+    {% endfor %}
+</script>
+
+{%endblock%}}
+
+{% block content %}
+<div class="kode_banner_1 " style="margin-bottom: 50px">
+        <div class="main_banner slick-initialized slick-slider">
+            <div aria-live="polite" class="slick-list draggable">
+                <div class="slick-track" role="listbox" style="opacity: 1; width: 3500px;"><div class="slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false" tabindex="-1" role="option" aria-describedby="slick-slide20" style="width: 50%; text-align:center; left: 0px; top: 0px; z-index: 999; opacity: 1;">
+                <!--Banner Thumb START-->
+                <div class="thumb">
+                    <img src="{% static 'extra-images/bulls.png ' %}" alt="">
+                    <div class="container">
+                        <div class="banner_caption text-center">
+                            <span>圣诞大战 !!</span>
+                            <h1>
+                                芝加哥公牛 <b>vs</b> 犹他爵士
+                            </h1>
+                            <p>12月25日 美国 芝加哥 联合中心球馆</p>
+                            <a href="http://china.nba.com/?gr=www" class="btn-1" tabindex="0">进入NBA官网查看详情</a>
+                        </div>
+                    </div>
+                </div>
+                    <!--Banner Thumb START-->
+            </div>
+            </div></div>
+        <button type="button" data-role="none" class="slick-next slick-arrow" aria-label="Next" role="button" style="display: inline-block;">Next</button></div>
+    </div>
+<div class="container">
+
+    <div class="row" style="margin-bottom: 20px">
+
+        <aside class="col-md-4">
+            <div class="widget widget_ranking">
+                <h6 class="kf_hd1"  id="best_player"> <span>场均得分榜</span> </h6>
+                <div class="kf_border">
+                    <ul class="kf_table">
+                        {% for row in psg%}
+                        <li>
+                            <div class="table_no">
+                                <span>{{ forloop.counter }}</span>
+                            </div>
+                            <div>
+                                <a href="/player/singlePlayer?id={{row.id}}">{{row.player}}</a>
+                            </div>
+                            <div class="team_point">
+                                <span>{{row.ps_g}}</span>
+                            </div>
+                        </li>
+                        {%endfor%}
+                    </ul>
+                </div>
+             </div>
+        </aside>
+
+        <aside class="col-md-4">
+            <div class="widget widget_ranking">
+                <h6 class="kf_hd1"> <span>场均篮板榜</span> </h6>
+                <div class="kf_border">
+                    <ul class="kf_table">
+                        {% for row in trb %}
+                        <li>
+                            <div class="table_no">
+                                <span>{{ forloop.counter }}</span>
+                            </div>
+                            <div>
+                                <a href="/player/singlePlayer?id={{row.id}}">{{row.player}}</a>
+                            </div>
+                            <div class="team_point">
+                                <span>{{row.trb}}</span>
+                            </div>
+                        </li>
+                        {%endfor%}
+                    </ul>
+                </div>
+             </div>
+        </aside>
+
+        <aside class="col-md-4">
+            <div class="widget widget_ranking">
+                <h6 class="kf_hd1"> <span>场均助攻榜</span> </h6>
+                <div class="kf_border">
+                    <ul class="kf_table">
+                        {% for row in ast %}
+                        <li>
+                            <div class="table_no">
+                                <span>{{ forloop.counter }}</span>
+                            </div>
+                            <div>
+                                <a href="/player/singlePlayer?id={{row.id}}">{{row.player}}</a>
+                            </div>
+                            <div class="team_point">
+                                <span>{{row.ast}}</span>
+                            </div>
+                        </li>
+                        {%endfor%}
+                    </ul>
+                </div>
+             </div>
+        </aside>
+    </div>
+ <div class="row" style="margin-bottom: 20px">
+
+        <aside class="col-md-4">
+            <div class="widget widget_ranking">
+                <h6 class="kf_hd1"> <span>场均抢断榜</span> </h6>
+                <div class="kf_border">
+                    <ul class="kf_table">
+                        {% for row in stl%}
+                        <li>
+                            <div class="table_no">
+                                <span>{{ forloop.counter }}</span>
+                            </div>
+                            <div>
+                                <a href="/player/singlePlayer?id={{row.id}}">{{row.player}}</a>
+                            </div>
+                            <div class="team_point">
+                                <span>{{row.stl}}</span>
+                            </div>
+                        </li>
+                        {%endfor%}
+                    </ul>
+                </div>
+             </div>
+        </aside>
+
+        <aside class="col-md-4">
+            <div class="widget widget_ranking">
+                <h6 class="kf_hd1"> <span>场均盖帽榜</span> </h6>
+                <div class="kf_border">
+                    <ul class="kf_table">
+                        {% for row in blk %}
+                        <li>
+                            <div class="table_no">
+                                <span>{{ forloop.counter }}</span>
+                            </div>
+                            <div>
+                                <a href="/player/singlePlayer?id={{row.id}}">{{row.player}}</a>
+                            </div>
+                            <div class="team_point">
+                                <span>{{row.blk}}</span>
+                            </div>
+                        </li>
+                        {%endfor%}
+                    </ul>
+                </div>
+             </div>
+        </aside>
+
+        <aside class="col-md-4">
+            <div class="widget widget_ranking">
+                <h6 class="kf_hd1"> <span>场均命中率</span> <label style="float:right ;margin: 15px 10px 10px 10px;font-size: 12px;font-family: 幼圆;color: #5e5e5e">*命中次数大于5次</label> </h6>
+                <div class="kf_border">
+                    <ul class="kf_table">
+                        {% for row in fg %}
+                        <li>
+                            <div class="table_no">
+                                <span>{{ forloop.counter }}</span>
+                            </div>
+                            <div>
+                                <a href="/player/singlePlayer?id={{row.id}}">{{row.player}}</a>
+                            </div>
+                            <div class="team_point">
+                                <span>{{row.fg}}</span>
+                            </div>
+                        </li>
+                        {%endfor%}
+                    </ul>
+                </div>
+             </div>
+        </aside>
+    </div>
+
+    <div class="row">
+        <aside class="col-md-6">
+            <div class="widget widget_ranking widget_league_table" id="team">
+            <!--Heading 1 Start-->
+                <h6 class="kf_hd1">
+                    <span>东部排名</span>
+                </h6>
+                <!--Heading 1 END-->
+                <div class="kf_border">
+                    <!--Table Wrap Start-->
+                    <ul class="kf_table">
+                        <li class="table_head">
+                            <div>
+                                <strong>排名</strong>
+                            </div>
+                            <div>
+                                <strong>队名</strong>
+                            </div>
+                            <div >
+                                <strong>胜场</strong>
+                            </div>
+                            <div>
+                                <strong>败场</strong>
+                            </div>
+                            <div>
+                                <strong>胜率</strong>
+                            </div>
+                        </li>
+                         {% for row in east %}
+                        <li>
+                            <div class="table_no">
+                                <span>{{ forloop.counter }}</span>
+                            </div>
+                            <div>
+                                <a href="/player/teamData?id={{row.id}}">{{row.name}}</a>
+                             </div>
+                            <div class="match_win">
+                                <span>{{row.win}}</span>
+                            </div>
+                            <div class="match_win">
+                                <span>{{row.lose}}</span>
+                            </div>
+                            <div class="team_point" id="{{row.id}}">
+                                <span></span>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <!--Table Wrap End-->
+                </div>
+            </div>
+        </aside>
+
+        <aside class="col-md-6">
+            <div class="widget widget_ranking widget_league_table">
+            <!--Heading 1 Start-->
+                <h6 class="kf_hd1">
+                    <span>西部排名</span>
+                </h6>
+                <!--Heading 1 END-->
+                <div class="kf_border">
+                    <!--Table Wrap Start-->
+                    <ul class="kf_table">
+                        <li class="table_head">
+                            <div>
+                                <strong>排名</strong>
+                            </div>
+                            <div>
+                                <strong>队名</strong>
+                            </div>
+                            <div >
+                                <strong>胜场</strong>
+                            </div>
+                            <div>
+                                <strong>败场</strong>
+                            </div>
+                            <div>
+                                <strong>胜率</strong>
+                            </div>
+                        </li>
+                         {% for row in west %}
+                        <li>
+                            <div class="table_no">
+                                <span>{{ forloop.counter }}</span>
+                            </div>
+                            <div>
+                                <a href="/player/teamData?id={{row.id}}">{{row.name}}</a>
+                             </div>
+                            <div class="match_win">
+                                <span>{{row.win}}</span>
+                            </div>
+                            <div class="match_win">
+                                <span>{{row.lose}}</span>
+                            </div>
+                            <div class="team_point" id="{{row.id}}">
+                                <span></span>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <!--Table Wrap End-->
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,599 @@
+{% extends "base.html" %}
+
+{% block title %}Single amazing  player in nba {% endblock %}
+{%load staticfiles%}
+
+
+    {% block js %}
+
+   <script>
+
+    $(document).ready(function(){
+        function progressbar_control() {
+            var fg = "{{data.fg}}";
+            var n_2pp = "{{data.number_2pp}}";
+            var n_3pp = "{{data.number_3pp}}";
+            var ftp = "{{data.ftp}}";
+
+            var v_fg;
+            var v_2pp;
+            var v_3pp;
+            var v_ftp;
+
+            if (fg !== 'None') v_fg = (fg *100).toFixed(1) + '%';
+            else v_fg = '0%';
+            $('#progressbars_fg').css("width",v_fg);
+            $('#span_fg').html(v_fg);
+
+
+            if (n_2pp !== 'None')  v_2pp = (n_2pp *100).toFixed(1) + '%';
+            else  v_2pp = '0%';
+            $('#progressbars_2pp').css("width",v_2pp);
+            $('#span_2pp').html(v_2pp);
+
+
+            if (n_3pp !== 'None') v_3pp = (n_3pp *100).toFixed(1) + '%';
+            else  v_3pp = '0%';
+            $('#progressbars_3pp').css("width",v_3pp);
+            $('#span_3pp').html(v_3pp);
+
+
+            if (ftp !== 'None')  v_ftp = (ftp *100).toFixed(1) + '%';
+            else  v_ftp = '0%';
+            $('#progressbars_ftp').css("width",v_ftp);
+            $('#span_ftp').html(v_ftp);
+
+
+
+        }
+
+        progressbar_control();
+    });
+   </script>
+
+    <script>
+        // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+    option = {
+    title: {
+        x: 'center',
+        text: '基础数据对比图表',
+        subtext: '平均数据来源于出场数大于20的球员',
+
+    },
+    tooltip: {
+        trigger: 'item'
+    },
+    toolbox: {
+        show: true,
+        feature: {
+            dataView: {show: true, readOnly: false},
+            restore: {show: true},
+            saveAsImage: {show: true}
+        }
+    },
+    calculable: true,
+    grid: {
+        borderWidth: 0,
+        y: 80,
+        y2: 60
+    },
+    xAxis: [
+        {
+            type: 'category',
+            data: ['得分', '篮板', '助攻','抢断','盖帽']
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value',
+
+        }
+    ],
+    series: [
+        {
+            name: '联盟最高',
+            type: 'bar',
+            itemStyle: {
+                normal: {
+                    color:'#C1232B',
+                    label: {
+                        show: true,
+                        position: 'top',
+                        formatter: '联盟最高\n{c}'
+                    }
+                }
+            },
+            data: [{{max.psg}},{{max.trb}},{{max.ast}},{{max.stl}},{{max.blk}}],
+        }
+        ,
+        {
+            name: '联盟场均',
+            type: 'bar',
+            itemStyle: {
+                normal: {
+                    color:'#B5C334',
+                    label: {
+                        show: true,
+                        position: 'top',
+                        formatter: '联盟平均\n{c}'
+                    }
+                }
+            },
+            data: [{{avg.psg}},{{avg.trb}},{{avg.ast}},{{avg.stl}},{{avg.blk}}],
+        }
+        ,
+        {
+            name: '{{data.player}}',
+            type: 'bar',
+            itemStyle: {
+                normal: {
+                    color:'#E87C25',
+                    // color: function(params) {
+                    //     // build a color map as your need.
+                    //     var colorList = [
+                    //       '#C1232B','#B5C334','#E87C25','#27727B',
+                    //        '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD',
+                    //        '#D7504B','#C6E579','#F4E001','#F0805A','#26C0C0'
+                    //     ];
+                    //     return colorList[params.dataIndex]
+                    // },
+                    label: {
+                        show: true,
+                        position: 'top',
+                        formatter: '{{data.player}}\n{c}'
+                    }
+                }
+            },
+            data: [{{data.ps_g}},{{data.trb}},{{data.ast}},{{data.stl}},{{data.blk}}],
+        }
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+
+<script>
+        // 基于准备好的dom，初始化echarts实例
+    var myChart2 = echarts.init(document.getElementById('main2'));
+
+        // 指定图表的配置项和数据
+    option = {
+    title: {
+        x: 'center',
+        text: '命中率对比图表',
+        subtext: '最高数据来源于场均出手数大于4的球员，平均数据来源于出场大于20的球员',
+    },
+    tooltip: {
+        trigger: 'item'
+    },
+    toolbox: {
+        show: true,
+        feature: {
+            dataView: {show: true, readOnly: false},
+            restore: {show: true},
+            saveAsImage: {show: true}
+        }
+    },
+    calculable: true,
+    grid: {
+        borderWidth: 0,
+        y: 80,
+        y2: 60
+    },
+    xAxis: [
+        {
+            type: 'category',
+            data: ['投篮命中率', '三分命中率', '罚球命中率','真实命中率']
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value',
+
+        }
+    ],
+    series: [
+        {
+            name: '联盟最高',
+            type: 'bar',
+            itemStyle: {
+                normal: {
+                    color:'#C1232B',
+                    label: {
+                        show: true,
+                        position: 'top',
+                        formatter: '联盟最高\n{c}'
+                    }
+                }
+            },
+            data: [{{max.fg}},{{max.a_3pp}},{{max.ftp}},{{max.efgp}}],
+        }
+        ,
+        {
+            name: '联盟平均',
+            type: 'bar',
+            itemStyle: {
+                normal: {
+                    color:'#B5C334',
+                    label: {
+                        show: true,
+                        position: 'top',
+                        formatter: '联盟平均\n{c}'
+                    }
+                }
+            },
+            data: [{{avg.fg}},{{avg.a_3pp}},{{avg.ftp}},{{avg.efgp}}],
+        }
+        ,
+        {
+            name: '{{data.player}}',
+            type: 'bar',
+            itemStyle: {
+                normal: {
+                    color:'#E87C25',
+                    // color: function(params) {
+                    //     // build a color map as your need.
+                    //     var colorList = [
+                    //       '#C1232B','#B5C334','#E87C25','#27727B',
+                    //        '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD',
+                    //        '#D7504B','#C6E579','#F4E001','#F0805A','#26C0C0'
+                    //     ];
+                    //     return colorList[params.dataIndex]
+                    // },
+                    label: {
+                        show: true,
+                        position: 'top',
+                        formatter: '{{data.player}}\n{c}'
+                    }
+                }
+            },
+            data: [{{data.fg}},{{data.number_3pp}},{{data.ftp}},{{data.efgp}}],
+        }
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart2.setOption(option);
+    </script>
+
+
+<script>
+    var bing = echarts.init(document.getElementById('bing'));
+    option = {
+    title : {
+        text: '得分来源',
+        x:'center',
+        top:"20%",
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    series : [
+        {
+            name: '得分来源',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data:[
+                {value:{{score.2p}}, name:'两分'},
+                {value:{{score.3p}}, name:'三分'},
+                {value:{{score.ft}}, name:'罚球'},
+            ],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+    ]
+};
+
+// bing.setOption(option);
+
+
+
+    var radar = echarts.init(document.getElementById('radar'));
+    option2 = {
+    title: {
+        text: '球员数据雷达图',
+        x:'center'
+    },
+    tooltip: {},
+    radar: {
+        name: {
+            textStyle: {
+                color: '#fff',
+                backgroundColor: '#999',
+                borderRadius: 3,
+                padding: [3,5]
+           }
+        },
+        indicator: [
+           { name: '得分/{{max.psg}}', max: {{max.psg}}},
+           { name: '篮板/{{max.trb}}', max: {{max.trb}}},
+           { name: '助攻/{{max.ast}}', max: {{max.ast}}},
+           { name: '抢断/{{max.stl}}', max: {{max.stl}}},
+           { name: '盖帽/{{max.blk}}', max: {{max.blk}}},
+           { name: '真实命中率/{{max.efgp}}', max: {{max.efgp}}}
+        ]
+    },
+    series: [{
+        name: '{{data.player}}',
+        type: 'radar',
+        // areaStyle: {normal: {}},
+            label:{
+        normal:{
+        show:true,                  //是否显示标签。
+        position:"inside",          //标签的位置。// 绝对的像素值[10, 10],// 相对的百分比['50%', '50%'].'top','left','right','bottom','inside','insideLeft','insideRight','insideTop','insideBottom','insideTopLeft','insideBottomLeft','insideTopRight','insideBottomRight'
+        offset:[0, 0],             //是否对文字进行偏移。默认不偏移。例如：[30, 40] 表示文字在横向上偏移 30，纵向上偏移 40。
+        formatter:'{c}',       //标签内容格式器。模板变量有 {a}、{b}、{c}，分别表示系列名，数据名，数据值。
+        }
+
+         },
+        data : [
+             {
+                value : [{{data.ps_g}}, {{data.trb}}, {{data.ast}}, {{data.stl}}, {{data.blk}}, {{data.efgp}}],
+                // name : '得分'
+                }
+            ]
+        }]
+    };
+
+    radar.setOption(option2);
+    bing.setOption(option);
+    // var min1 = document.getElementById('min1');
+    // var min2 = document.getElementById('min2');
+    // var charts = [];
+    //
+    // var mychart = echarts.init(min1);
+    // mychart.setOption(option);
+    // charts.push(mychart);
+    // mychart = echarts.init(min2);
+    // mychart.setOption(option2);
+    // charts.push(mychart);
+    // windows.onresize = function () {
+    //     for(var i = 0; i<charts.length;i++){
+    //         charts[i].resize();
+    //     }
+    // }
+
+
+
+
+
+</script>
+    {% endblock %}
+
+    {% block content %}
+<div class="kode_content_wrap">
+    <div class="container">
+        <div class="row">
+            <div class="widget roster_sidebar">
+                            <!--Heading 1 Start-->
+                            <h6 class="kf_hd1 margin_0">
+                                <span>Featured Player</span>
+                            </h6>
+                            <!--Heading 1 End-->
+                            <!--Roster Dec Start-->
+                            <div class="kf_roster_dec">
+                                <img src=  "{% static 'player_img/' %}{{data.id}}.png" alt="" style="width: 150px ;height: 170px;float: left;margin-right: 50px">
+                                <div class="text">
+
+                                    <div class="text_overflow">
+                                        <h2>
+                                            {{ data.player }}
+                                        </h2>
+                                        <label class="my_inline">位置：</label> <h6 class="my_inline">：{{data.pos}}</h6>
+                                        <br/>
+                                        <label class="my_inline">年龄：</label> <h6 class="my_inline">：{{data.age}}</h6>
+                                        <br/>
+                                        <label class="my_inline">球队：</label> <h6 class="my_inline">：{{data.tm}}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Roster Dec End-->
+                            <div class="kf_plyer_rating">
+                                <span>
+                                    <strong>得分</strong>
+                                    <b>{{data.ps_g}}</b>
+                                </span>
+                                <span>
+                                    <strong>篮板</strong>
+                                    <b>{{data.trb}}</b>
+                                </span>
+                                <span>
+                                    <strong>助攻</strong>
+                                    <b>{{data.ast}}</b>
+                                </span>
+                                <span>
+                                    <strong>抢断</strong>
+                                    <b>{{data.stl}}</b>
+                                </span>
+                                <span>
+                                    <strong>盖帽</strong>
+                                    <b>{{data.blk}}</b>
+                                </span>
+                                <span>
+                                    <strong>失误</strong>
+                                    <b>{{data.tov}}</b>
+                                </span>
+                            </div>
+
+                            <ul class="kf_table2 kf_tableaside">
+                                <li>
+                                    <div>
+                                        <span>
+                                            出场数：
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            {{data.g}}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            首发出场数：
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            {{data.gs}}
+                                        </span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <span>
+                                            场均命中数：
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            {{data.fgp}}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            场均出手数：
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            {{data.fga}}
+                                        </span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <span>
+                                            两分命中数：
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            {{data.number_2p}}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            两分出手数:
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            {{data.number_2pa}}
+                                        </span>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div>
+                                        <span>
+                                            三分命中数：
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            {{data.number_3p}}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            三分出手数:
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            {{data.number_3pa}}
+                                        </span>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div>
+                                        <span>
+                                            罚球命中数：
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            {{data.ft}}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            罚球出手数:
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            {{data.fta}}
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <div class="kf_progress1">
+                                <!--SKILLS PROGRESS START-->
+                                <div class="skill-progress">
+                                    <span>投篮命中率：</span>
+                                    <div class="progress_single_wrapper"><div id="progressbars_fg" class="progressbars progress_single" progress="65%" style="background: rgb(74, 191, 247); width: 65%;"><span id="span_fg" style="opacity: 1;">65%</span></div></div>
+                                </div>
+                                    <!--SKILLS PROGRESS END-->
+                                <!--SKILLS PROGRESS START-->
+                                <div class="skill-progress">
+                                    <span>两分命中率：</span>
+                                    <div class="progress_single_wrapper"><div id="progressbars_2pp" class="progressbars progress_single" progress="88%" style="background: rgb(74, 191, 247); width: 88%;"><span id="span_2pp"  style="opacity: 1;">88%</span></div></div>
+                                </div>
+                                <!--SKILLS PROGRESS END-->
+                                <!--SKILLS PROGRESS START-->
+                                <div class="skill-progress">
+                                    <span>三分命中率：</span>
+                                    <div class="progress_single_wrapper"><div id="progressbars_3pp"class="progressbars progress_single" progress="75%" style="background: rgb(74, 191, 247); width: 75%;"><span id="span_3pp" style="opacity: 1;">75%</span></div></div>
+                                </div>
+
+                                <div class="skill-progress">
+                                    <span>罚球命中率：</span>
+                                    <div class="progress_single_wrapper"><div id="progressbars_ftp" class="progressbars progress_single" progress="75%" style="background: rgb(74, 191, 247); width: 75%;"><span id="span_ftp" style="opacity: 1;">75%</span></div></div>
+                                </div>
+                                <!--SKILLS PROGRESS END-->
+                            </div>
+                        </div>
+        </div>
+
+
+
+    </div>
+    <div id="main" style="width: 1550px;height:600px;"></div>
+    <div id="main2" style="width: 1550px;height:600px;"></div>
+
+
+    <div class="row" style="margin: -80px 0px">
+        <div class="col-md-6" style="float:left;">
+            <div style="width: 600px;height:600px;" id="bing">
+        </div>
+        <div class="col-md-6" style="float:right;">
+            <div  style="width:560px;height:500px; margin: -472px 450px" id="radar" ></div>
+        </div>
+
+
+    <!--<div id="bing" style="width: 500px;height:500px; "></div>-->
+    <!--<div id="radar" style="width: 500px;height:500px; "></div>-->
+
+    <!--<div id="min1"></div>-->
+    <!--<div id="min2"></div>-->
+</div>
+    {% endblock %}
+
+
+
+
+

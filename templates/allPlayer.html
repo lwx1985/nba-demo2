@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+   
+{% block title %}My amazing all player in nba {% endblock %}
+
+{%load staticfiles%}
+
+
+    {% block js %}
+    <script src="{% static 'js/z1_lwx_all_player_search.js' %} "></script>
+
+    <script>
+
+    $(document).ready(function() {
+        function test(){
+            var temp = "{{order}}"+"test-model_language" ;
+            console.log(temp);
+        }
+        test();
+
+        // function compare_up_down(name,up,down) {
+        //     if(up<down){
+        //         var string = name + "下限大于上限请重新输入";
+        //         alert(string);
+        //         return false;
+        //     }
+        //     else{
+        //         return true;
+        //     }
+        // }
+
+        $("#search_data").submit(function (e) {
+            e.preventDefault();
+            // var player = $("#player_search").val();
+            // var age_down =$("#age_down_search").val();
+            // var age_up = $("#age_up_search").val();
+            // var input_array = ["player","age_down","age_up"];
+            var limit_string ='';
+            $(".my_search").each(function () {
+                var temp_value = this.value;
+                var temp_id = this.id;
+                var temp_name =temp_id.substring(0,temp_id.length-7);
+                if(temp_value !== ''){
+                limit_string = limit_string + '&' + temp_name + '=' + temp_value;
+                }
+            })
+            window.location.href='./?page=1&order=-ps_g'+limit_string;
+
+            // for (var i = 0;i<input_array.length;i++){
+            //     var temp_id = '"#' + input_array[i] + '_search"';
+            //     console.log(temp_id);
+            //     var temp_name = input_array[i];
+            //     var temp_value = $(temp_id).val();
+            //     if(temp_id !==''){
+            //         limit_string = limit_string + '&' + temp_name + '=' + temp_value;
+            //     }
+            // }
+
+            // if(compare_up_down("年龄",age_up,age_down)) {
+            //     if (player !== '') {
+            //         limit_string = limit_string + "&player=" + player;
+            //     }
+            //     if (age_down !== '') {
+            //         limit_string = limit_string + "&age_down=" + age_down;
+            //     }
+            //     if (age_up !== '') {
+            //         limit_string = limit_string + "&age_up=" + age_up;
+            //     }
+            //     window.location.href='./?page=1&order=-ps_g'+limit_string;
+            // }
+        });
+
+        $(".order").click(function(){
+
+            var order_id = $(this).attr("id");
+            var order_method = $.getUrlParam('order');
+
+
+            if (order_method === null){
+                order_method = order_id;
+            }
+            if(order_method[0] === '-' && order_method === '-'+ order_id){
+                order_method = order_id;
+            }
+            else{
+                order_method = '-' + order_id;
+            }
+
+            var limit_string = '{{limit_string|safe}}';
+
+            if (limit_string === ''){
+                window.location.href='./?page=1&order='+order_method ;
+            }
+            else{
+
+                window.location.href='./?page=1&order='+order_method + limit_string;
+            }
+
+
+
+
+        });
+
+
+
+
+
+    });
+
+    </script>
+
+    {% endblock %}
+
+    {% block s_js %}
+<script>
+
+</script>
+    {% endblock %}
+
+    {% block content %}
+
+
+<div class="container">
+
+    <form id="search_data" class="form-inline" method="get" action="">
+      <div class="form-group">
+        <label for="player_search" class = "my_inline">名字: </label>
+        <input type="text" class="form-control my_search" id="player_search" placeholder="英文名-大小写不敏感">
+      </div>
+
+      <div class="form-group">
+        <label class = "my_inline">  年龄: </label>
+        <input min="0" max="100" type="number" class="form-control my_search" id="age_down_search" placeholder="">
+        <label class = "my_inline">- </label>
+        <input min="0" max="100"  type="number" class="form-control my_search" id="age_up_search" placeholder="">
+      </div>
+
+      <div class="form-group">
+        <label class = "my_inline">出场数: </label>
+        <input min="0" max="150" type="number" class="form-control my_search" id="g_down_search" placeholder="">
+        <label class = "my_inline">- </label>
+        <input min="0" max="100"  type="number" class="form-control my_search" id="g_up_search" placeholder="">
+      </div>
+
+      <div class="form-group">
+        <label class = "my_inline">场均时间: </label>
+        <input min="0" max="150" type="number" step = "0.1" class="form-control my_search" id="mp_down_search" placeholder="">
+        <label class = "my_inline">- </label>
+        <input min="0" max="100"  type="number" step = "0.1" class="form-control my_search" id="mp_up_search" placeholder="">
+      </div>
+
+      <div class="form-group">
+        <label class = "my_inline">篮板: </label>
+        <input min="0" max="150" type="number" step = "0.1" class="form-control my_search" id="trb_down_search" placeholder="">
+        <label class = "my_inline">- </label>
+        <input min="0" max="100"  type="number" step = "0.1" class="form-control my_search" id="trb_up_search" placeholder="">
+      </div>
+
+      <div class="form-group">
+        <label class = "my_inline">助攻: </label>
+        <input min="0" max="150" type="number" step = "0.1" class="form-control my_search" id="ast_down_search" placeholder="">
+        <label class = "my_inline">- </label>
+        <input min="0" max="100"  type="number" step = "0.1" class="form-control my_search" id="ast_up_search" placeholder="">
+      </div>
+
+
+      <div class="form-group">
+        <label class = "my_inline">抢断: </label>
+        <input min="0" max="150" type="number" step = "0.1" class="form-control my_search" id="stl_down_search" placeholder="">
+        <label class = "my_inline">- </label>
+        <input min="0" max="100"  type="number" step = "0.1" class="form-control my_search" id="stl_up_search" placeholder="">
+      </div>
+
+
+      <div class="form-group">
+        <label class = "my_inline">失误: </label>
+        <input min="0" max="150" type="number" step = "0.1" class="form-control my_search" id="tov_down_search" placeholder="">
+        <label class = "my_inline">- </label>
+        <input min="0" max="100"  type="number" step = "0.1" class="form-control my_search" id="tov_up_search" placeholder="">
+      </div>
+
+      <div class="form-group">
+        <label class = "my_inline">罚球命中率: </label>
+        <input min="0" max="1" type="number" step = "0.001" class="form-control my_search" id="ftp_down_search" placeholder="">
+        <label class = "my_inline">- </label>
+        <input min="0" max="1"  type="number" step = "0.001" class="form-control my_search" id="ftp_up_search" placeholder="">
+      </div>
+
+      <div class="form-group">
+        <label class = "my_inline">命中率: </label>
+        <input min="0" max="1" type="number" step = "0.001" class="form-control my_search" id="fg_down_search" placeholder="">
+        <label class = "my_inline">- </label>
+        <input min="0" max="1"  type="number" step = "0.001" class="form-control my_search" id="fg_up_search" placeholder="">
+      </div>
+
+
+      <div class="form-group">
+        <label class = "my_inline">三分命中率: </label>
+        <input min="0" max="150" type="number" step = "0.01" class="form-control my_search" id="number_3pp_down_search" placeholder="">
+        <label class = "my_inline">- </label>
+        <input min="0" max="100"  type="number" step = "0.01" class="form-control my_search" id="number_3pp_up_search" placeholder="">
+      </div>
+
+
+      <div class="form-group">
+        <label class = "my_inline">得分: </label>
+        <input min="0" max="150" type="number" step = "0.1" class="form-control my_search" id="ps_g_down_search" placeholder="">
+        <label class = "my_inline">- </label>
+        <input min="0" max="100"  type="number" step = "0.1" class="form-control my_search" id="ps_g_up_search" placeholder="">
+      </div>
+
+
+
+
+
+      <button type="submit" class="btn btn-default">查询</button>
+    </form>
+
+
+    <table class="table table-bordered table-hover">
+        <caption> 所有球员信息查询 </caption>
+        <thead>
+        <tr id = 'read_all'>
+            <th class = "order" id="player">名字 <icon id="player_icon" style=" display: none" ></icon></th>
+            <th class = "order" id="pos">位置 <icon id="pos_icon" style=" display: none" ></icon></th>
+            <th class = "order" id="age">年龄 <icon id="age_icon" style=" display: none" ></icon></th>
+            <th class = "order" id="tm">球队 <icon id="tm_icon" style=" display: none" ></icon></th>
+            <th class = "order" id="g">出场数 <icon id="g_icon" style=" display: none" ></icon></th>
+            <th class = "order" id="mp">场均时间 <icon id="mp_icon" style=" display: none" ></icon></th>
+            <th class = "order" id="trb">篮板 <icon id="trb_icon" style=" display: none" ></icon></th>
+            <th class = "order" id="ast">助攻 <icon id="ast_icon" style=" display: none" ></icon></th>
+            <th class = "order" id="stl">抢断 <icon id="stl_icon" style=" display: none" ></icon></th>
+            <th class = "order" id="blk">盖帽 <icon id="blk_icon" style=" display: none" ></icon></th>
+            <th class = "order" id="tov">失误 <icon id="tov_icon" style=" display: none" ></icon></th>
+            <th class = "order" id="ftp">罚球命中率 <icon id="ftp_icon" style=" display: none" ></icon></th>
+            <th class = "order" id="fg">命中率 <icon id="fg_icon" style=" display: none" ></icon></th>
+            <th class = "order" id="number_3pp">三分命中率 <icon id="number_3pp_icon" style=" display: none" ></icon></th>
+            <th class = "order" id="ps_g">得分 <icon id="ps_g_icon" style=" display: none" ></icon></th>
+        </tr>
+        </thead>
+        {% for row in t_list %}
+        <tbody>
+        <tr>
+            <td><a href="/player/singlePlayer?id={{row.id}}">{{row.player}} </a></td>
+            <td>{{row.pos}} </td>
+            <td>{{row.age}} </td>
+            <td>{{row.tm}} </td>
+            <td>{{row.g}} </td>
+            <td>{{row.mp}} </td>
+            <td>{{row.trb}} </td>
+            <td>{{row.ast}} </td>
+            <td>{{row.stl}} </td>
+            <td>{{row.blk}} </td>
+            <td>{{row.tov}}</td>
+            <td>{{row.ftp}}</td>
+            <td>{{row.fg}} </td>
+            <td>{{row.number_3pp}} </td>
+            <td>{{row.ps_g}} </td>
+        </tr>
+        </tbody>
+        {% endfor %}
+     </table>
+     <div class="pagination">
+
+        <span class="step-links">
+            {% if contacts.has_previous %}
+               <button id = "last" type="button" class="btn-default"
+                       onclick=" window.location.href='./?page={{ contacts.previous_page_number }}&order={{order}}{{limit_string}}' " >上一页</button>
+            {% endif %}
+            <!-- <span class="current">
+                 当前页：{{ contacts.number }} 总共：{{ contacts.paginator.num_pages }} 页
+            </span> -->
+            <span class="current">                
+                当前页： <select  style="width:63px ;height: 35px;"
+                                 onchange="
+                                 var page = this.options[this.options.selectedIndex].value; 
+                                 window.location.href='./?page='+page+'&order={{order}}{{limit_string}}'">
+
+                                {% for page in contacts.paginator.page_range %}                           
+                                {% if page == contacts.number%}
+                                <option value= {{page}} selected = "selected" > {{page}} </option>
+                                {% else %}
+                                <option value= {{page}} > {{page}} </option>
+                                {% endif %}
+                                {% endfor %}
+                        </select> 总共：{{ contacts.paginator.num_pages }} 页
+           </span>
+            {% if contacts.has_next %}
+                <!-- <button id = "next" type="button" class="btn-default"><a href="?page={{ contacts.next_page_number }}&order={{order}}">下一页</a></button> -->
+                <button id = "next" type="button" class="btn-default" onclick=" window.location.href='./?page={{ contacts.next_page_number }}&order={{order}}{{limit_string}}'" >下一页</button>
+            {% endif %}
+        </span>
+    </div>
+</div>
+
+{% endblock %}
+

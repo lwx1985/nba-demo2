@@ -1,0 +1,545 @@
+{% extends "base.html" %}
+{% block title %} 数据散点图 {% endblock %}
+{%load staticfiles%}
+
+
+    {% block js %}
+<script>
+    var myChart = echarts.init(document.getElementById('main'));
+    var dataBJ = [
+        // [1,55,9,56,0.46,18,6,"Lebron James"],
+        // [2,25,11,21,0.65,34,9,"Stephen Curry"],
+        // [25,42,27,43,1,53,22,"Anthony Davis"],
+        {% for row in  off%}
+
+        [{{row.ps_g}},{{row.efgp}},{{row.trb}},{{row.ast}},{{row.stl}},{{row.blk}},{{row.fg}},"{{row.player}}"],
+        {%endfor%}
+    ];
+
+
+
+    var schema = [
+        {name: 'psg', index: 1, text: '得分'},
+        {name: 'efgp', index: 2, text: '真实命中率'},
+        {name: 'trb', index: 4, text: '篮板'},
+        {name: 'ast', index: 5, text: '助攻'},
+        {name: 'stl', index: 6, text: '抢断'},
+        {name: 'blk', index: 7, text: '盖帽'},
+        {name: 'fg', index: 8, text: '命中率'},
+
+    ];
+
+
+    var itemStyle = {
+        normal: {
+            opacity: 0.8,
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+    };
+
+    option = {
+        title : {
+        text: 'NBA最优的进攻手',
+        subtext: '筛选条件：得分不低15，真实命中率不低0.5',
+         x:'center',
+        y:'top',
+        textAlign:'center',
+            textStyle: {
+            fontSize: 18,
+            fontWeight: 'bolder',
+            color: '#fff'          // 主标题文字颜色
+        },
+    },
+        backgroundColor: '#404a59',
+        color: [
+            '#dd4444'
+        ],
+        grid: {
+            x: '10%',
+            x2: 150,
+            y: '18%',
+            y2: '10%'
+        },
+        tooltip: {
+            padding: 10,
+            backgroundColor: '#222',
+            borderColor: '#777',
+            borderWidth: 1,
+            textStyle:{ fontSize:12, color:'#fff' },
+            formatter: function (obj) {
+                var value = obj.value;
+                return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 13px;padding-bottom: 7px;margin-bottom: 7px">'
+                    + obj.seriesName + ':' + value[7]
+                    + '</div>'
+                    + schema[0].text + '：' + value[0] + '<br>'
+                    + schema[1].text + '：' + value[1] + '<br>'
+                    + schema[2].text + '：' + value[2] + '<br>'
+                    + schema[3].text + '：' + value[3] + '<br>'
+                    + schema[4].text + '：' + value[4] + '<br>'
+                    + schema[5].text + '：' + value[5] + '<br>'
+                    + schema[6].text + '：' + value[6] + '<br>';
+            }
+        },
+        xAxis: {
+            type: 'value',
+            name: '得分',
+            min:14,
+            max:32,
+            nameGap: 16,
+            nameTextStyle: {
+                color: '#fff',
+                fontSize: 14
+            },
+            splitLine: {
+                show: false
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#eee'
+                }
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: '真实命中率',
+            min:0.49,
+            nameLocation: 'end',
+            nameGap: 20,
+            nameTextStyle: {
+                color: '#fff',
+                fontSize: 14
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#eee'
+                }
+            },
+            splitLine: {
+                show: false
+            }
+        },
+        visualMap: [
+            {
+                left: 'right',
+                bottom: '5%',
+                dimension: 1,
+                min: 0.49,
+                max: 0.65,
+                itemHeight: 120,
+                calculable: true,
+                precision: 2,
+                text: ['明暗'],
+                textGap: 30,
+                textStyle: {
+                    color: '#fff'
+                },
+                inRange: {
+                    colorLightness: [1, 0.5],
+                     symbolSize: 13,
+                },
+
+                outOfRange: {
+                    color: ['rgba(255,255,255,.2)']
+                },
+                controller: {
+                    inRange: {
+                        color: ['#c23531']
+                    },
+                    outOfRange: {
+                        color: ['#444']
+                    }
+                }
+            }
+        ],
+        series: [
+            {
+                name: '球员名字',
+                type: 'scatter',
+                itemStyle: itemStyle,
+                data: dataBJ,
+                label:{
+                    show:true,
+                    textStyle: {
+                fontSize:10
+                    },
+                    formatter:function(obj){
+                        var value = obj.value;
+                return ''+ value[7]+ ''
+                        },
+                    position:'bottom',
+                } ,
+            },
+
+        ]
+
+    };
+     myChart.setOption(option);
+</script>
+
+
+<script>
+    var myChart2 = echarts.init(document.getElementById('main2'));
+    var dataBJ = [
+        // [1,55,9,56,0.46,18,6,"Lebron James"],
+        // [2,25,11,21,0.65,34,9,"Stephen Curry"],
+        // [25,42,27,43,1,53,22,"Anthony Davis"],
+        {% for row in  trb%}
+
+        [{{row.trb}},{{row.orb}},{{row.ps_g}},{{row.ast}},{{row.stl}},{{row.blk}},{{row.fg}},"{{row.player}}"],
+        {%endfor%}
+    ];
+
+
+
+    var schema2 = [
+        {name: 'psg', index: 1, text: '篮板'},
+        {name: 'efgp', index: 2, text: '进攻篮板'},
+        {name: 'trb', index: 4, text: '得分'},
+        {name: 'ast', index: 5, text: '助攻'},
+        {name: 'stl', index: 6, text: '抢断'},
+        {name: 'blk', index: 7, text: '盖帽'},
+        {name: 'fg', index: 8, text: '命中率'},
+
+    ];
+
+
+    var itemStyle = {
+        normal: {
+            opacity: 0.8,
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+    };
+
+    option = {
+        title : {
+        text: 'NBA最优秀的篮板手',
+        subtext: '筛选条件：篮板不低于8，前场篮板不低2',
+         x:'center',
+        y:'top',
+        textAlign:'center',
+            textStyle: {
+            fontSize: 18,
+            fontWeight: 'bolder',
+            color: '#fff'          // 主标题文字颜色
+        },
+    },
+        backgroundColor: '#404a59',
+        color: [
+            '#dd4444'
+        ],
+        grid: {
+            x: '10%',
+            x2: 150,
+            y: '18%',
+            y2: '10%'
+        },
+        tooltip: {
+            padding: 10,
+            backgroundColor: '#222',
+            borderColor: '#777',
+            borderWidth: 1,
+            textStyle:{ fontSize:12, color:'#fff' },
+            formatter: function (obj) {
+                var value = obj.value;
+                return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 13px;padding-bottom: 7px;margin-bottom: 7px">'
+                    + obj.seriesName + ':' + value[7]
+                    + '</div>'
+                    + schema2[0].text + '：' + value[0] + '<br>'
+                    + schema2[1].text + '：' + value[1] + '<br>'
+                    + schema2[2].text + '：' + value[2] + '<br>'
+                    + schema2[3].text + '：' + value[3] + '<br>'
+                    + schema2[4].text + '：' + value[4] + '<br>'
+                    + schema2[5].text + '：' + value[5] + '<br>'
+                    + schema2[6].text + '：' + value[6] + '<br>';
+            }
+        },
+        xAxis: {
+            type: 'value',
+            name: '篮板',
+            min:8,
+            nameGap: 16,
+            nameTextStyle: {
+                color: '#fff',
+                fontSize: 14
+            },
+            splitLine: {
+                show: false
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#eee'
+                }
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: '进攻篮板',
+            min:2,
+            nameLocation: 'end',
+            nameGap: 20,
+            nameTextStyle: {
+                color: '#fff',
+                fontSize: 14
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#eee'
+                }
+            },
+            splitLine: {
+                show: false
+            }
+        },
+        visualMap: [
+            {
+                left: 'right',
+                bottom: '5%',
+                dimension: 1,
+                min: 2,
+                max:6,
+                itemHeight: 120,
+                calculable: true,
+                precision: 2,
+                text: ['明暗'],
+                textGap: 30,
+                textStyle: {
+                    color: '#fff'
+                },
+                inRange: {
+                    colorLightness: [1, 0.5],
+                     symbolSize: 13,
+                },
+
+                outOfRange: {
+                    color: ['rgba(255,255,255,.2)']
+                },
+                controller: {
+                    inRange: {
+                        color: ['#c23531']
+                    },
+                    outOfRange: {
+                        color: ['#444']
+                    }
+                }
+            }
+        ],
+        series: [
+            {
+                name: '球员名字',
+                type: 'scatter',
+                itemStyle: itemStyle,
+                data: dataBJ,
+                label:{
+                    show:true,
+                    textStyle: {
+                fontSize:10
+                    },
+                    formatter:function(obj){
+                        var value = obj.value;
+                return ''+ value[7]+ ''
+                        },
+                    position:'bottom',
+                } ,
+            },
+
+        ]
+
+    };
+     myChart2.setOption(option);
+</script>
+
+
+<script>
+    var myChart3 = echarts.init(document.getElementById('main3'));
+    var dataBJ = [
+        // [1,55,9,56,0.46,18,6,"Lebron James"],
+        // [2,25,11,21,0.65,34,9,"Stephen Curry"],
+        // [25,42,27,43,1,53,22,"Anthony Davis"],
+        {% for row in  ast%}
+
+        [{{row.ast}},{{row.orb}},{{row.ps_g}},{{row.trb}},{{row.stl}},{{row.blk}},{{row.fg}},"{{row.player}}"],
+        {%endfor%}
+    ];
+
+
+
+    var schema3 = [
+        {name: 'psg', index: 1, text: '助攻'},
+        {name: 'efgp', index: 2, text: '助攻失误比'},
+        {name: 'trb', index: 4, text: '得分'},
+        {name: 'ast', index: 5, text: '篮板'},
+        {name: 'stl', index: 6, text: '抢断'},
+        {name: 'blk', index: 7, text: '盖帽'},
+        {name: 'fg', index: 8, text: '命中率'},
+
+    ];
+
+
+    var itemStyle = {
+        normal: {
+            opacity: 0.8,
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+    };
+
+    option = {
+        title : {
+        text: 'NBA最优秀的进攻球员们',
+        subtext: '筛选条件：得分不低于15，真实命中率不低于0.5',
+         x:'center',
+        y:'top',
+        textAlign:'center',
+            textStyle: {
+            fontSize: 18,
+            fontWeight: 'bolder',
+            color: '#fff'          // 主标题文字颜色
+        },
+    },
+        backgroundColor: '#404a59',
+        color: [
+            '#dd4444'
+        ],
+        grid: {
+            x: '10%',
+            x2: 150,
+            y: '18%',
+            y2: '10%'
+        },
+        tooltip: {
+            padding: 10,
+            backgroundColor: '#222',
+            borderColor: '#777',
+            borderWidth: 1,
+            textStyle:{ fontSize:12, color:'#fff' },
+            formatter: function (obj) {
+                var value = obj.value;
+                return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 13px;padding-bottom: 7px;margin-bottom: 7px">'
+                    + obj.seriesName + ':' + value[7]
+                    + '</div>'
+                    + schema3[0].text + '：' + value[0] + '<br>'
+                    + schema3[1].text + '：' + value[1] + '<br>'
+                    + schema3[2].text + '：' + value[2] + '<br>'
+                    + schema3[3].text + '：' + value[3] + '<br>'
+                    + schema3[4].text + '：' + value[4] + '<br>'
+                    + schema3[5].text + '：' + value[5] + '<br>'
+                    + schema3[6].text + '：' + value[6] + '<br>';
+            }
+        },
+        xAxis: {
+            type: 'value',
+            name: '助攻',
+            min:5.5,
+            nameGap: 16,
+            nameTextStyle: {
+                color: '#fff',
+                fontSize: 14
+            },
+            splitLine: {
+                show: false
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#eee'
+                }
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: '助攻失误比',
+            min:1,
+            nameLocation: 'end',
+            nameGap: 20,
+            nameTextStyle: {
+                color: '#fff',
+                fontSize: 14
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#eee'
+                }
+            },
+            splitLine: {
+                show: false
+            }
+        },
+        visualMap: [
+            {
+                left: 'right',
+                bottom: '5%',
+                dimension: 1,
+                min: 1.5,
+                max:5,
+                itemHeight: 120,
+                calculable: true,
+                precision: 2,
+                text: ['明暗'],
+                textGap: 30,
+                textStyle: {
+                    color: '#fff'
+                },
+                inRange: {
+                    colorLightness: [1, 0.5],
+                     symbolSize: 13,
+                },
+
+                outOfRange: {
+                    color: ['rgba(255,255,255,.2)']
+                },
+                controller: {
+                    inRange: {
+                        color: ['#c23531']
+                    },
+                    outOfRange: {
+                        color: ['#444']
+                    }
+                }
+            }
+        ],
+        series: [
+            {
+                name: '球员名字',
+                type: 'scatter',
+                itemStyle: itemStyle,
+                data: dataBJ,
+                label:{
+                    show:true,
+                    textStyle: {
+                fontSize:10
+                    },
+                    formatter:function(obj){
+                        var value = obj.value;
+                return ''+ value[7]+ ''
+                        },
+                    position:'bottom',
+                } ,
+            },
+
+        ]
+
+    };
+     myChart3.setOption(option);
+</script>
+    {% endblock %}
+
+
+    {% block content %}
+    <div style="margin-left: 97px;margin-bottom: 50px;width: 1500px">
+        <h6 class="kf_hd1 margin_0">
+            <span>优秀球员散点图</span>
+        </h6>
+    </div>
+<div class="container">
+    <div id="main" style="width: 132%;height:800px;margin-bottom: 100px ;margin-left: -180px ;margin-top: 200px "></div>
+    <div id="main2" style="width: 132%;height:800px;margin-bottom: 100px ;margin-left: -180px "></div>
+    <div id="main3" style="width: 132%;height:800px;margin-bottom: 100px ;margin-left: -180px "></div>
+</div>
+    {% endblock %}

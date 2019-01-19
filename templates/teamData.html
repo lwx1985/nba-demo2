@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+
+{% block title %}球队信息 {% endblock %}
+{%load staticfiles%}
+
+
+    {% block js %}
+
+    {% endblock %}
+
+    {% block content %}
+<div class="kode_content_wrap">
+    <div class="container">
+        <div class="row">
+            <div class="widget roster_sidebar">
+                <h6 class="kf_hd1 margin_0">
+                    <span>球队信息</span>
+                </h6>
+                <div class="kf_roster_dec">
+                    <img src=  "{% static 'team_img/' %}{{data.id}}.png" alt="" style="width: 200px ;height: 200px;float: left;margin-right: 50px">
+                    <div class="text">
+
+                        <div class="text_overflow" >
+                            <h2>
+                                {{ data.player }}
+                            </h2>
+                            <label class="my_inline">球队名：</label> <h6 class="my_inline">{{data.fullname}}</h6>
+                            <br/>
+                            <label class="my_inline">经理：</label> <h6 class="my_inline">{{data.manager}}</h6>
+                            <br/>
+                            <label class="my_inline">教练：</label> <h6 class="my_inline">{{data.coach}}</h6>
+                            <br/>
+                            <label class="my_inline">体育馆：</label> <h6 class="my_inline">{{data.gymnasium}}</h6>
+                            <br/>
+                            <label class="my_inline">区位：</label> <h6 class="my_inline">{{data.region}}</h6>
+                            <br/>
+                            <label class="my_inline">中文名：</label> <h6 class="my_inline">{{data.chinese_name}}</h6>
+                            <br/>
+                            <label class="my_inline">战绩：</label> <h6 class="my_inline">{{data.win}}-{{data.lose}}</h6>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered table-hover">
+            <caption> 本队球员信息查询 </caption>
+            <thead>
+            <tr id = 'read_all'>
+                <th class = "order" id="player">名字 <icon id="player_icon" style=" display: none" ></icon></th>
+                <th class = "order" id="pos">位置 <icon id="pos_icon" style=" display: none" ></icon></th>
+                <th class = "order" id="age">年龄 <icon id="age_icon" style=" display: none" ></icon></th>
+                <th class = "order" id="tm">球队 <icon id="tm_icon" style=" display: none" ></icon></th>
+                <th class = "order" id="g">出场数 <icon id="g_icon" style=" display: none" ></icon></th>
+                <th class = "order" id="mp">场均时间 <icon id="mp_icon" style=" display: none" ></icon></th>
+                <th class = "order" id="trb">篮板 <icon id="trb_icon" style=" display: none" ></icon></th>
+                <th class = "order" id="ast">助攻 <icon id="ast_icon" style=" display: none" ></icon></th>
+                <th class = "order" id="stl">抢断 <icon id="stl_icon" style=" display: none" ></icon></th>
+                <th class = "order" id="blk">盖帽 <icon id="blk_icon" style=" display: none" ></icon></th>
+                <th class = "order" id="tov">失误 <icon id="tov_icon" style=" display: none" ></icon></th>
+                <th class = "order" id="ftp">罚球命中率 <icon id="ftp_icon" style=" display: none" ></icon></th>
+                <th class = "order" id="fg">命中率 <icon id="fg_icon" style=" display: none" ></icon></th>
+                <th class = "order" id="number_3pp">三分命中率 <icon id="number_3pp_icon" style=" display: none" ></icon></th>
+                <th class = "order" id="ps_g">得分 <icon id="ps_g_icon" style=" display: none" ></icon></th>
+            </tr>
+            </thead>
+            {% for row in p_list %}
+            <tbody>
+            <tr>
+                <td><a href="/player/singlePlayer?id={{row.id}}">{{row.player}} </a></td>
+                <td>{{row.pos}} </td>
+                <td>{{row.age}} </td>
+                <td>{{row.tm}} </td>
+                <td>{{row.g}} </td>
+                <td>{{row.mp}} </td>
+                <td>{{row.trb}} </td>
+                <td>{{row.ast}} </td>
+                <td>{{row.stl}} </td>
+                <td>{{row.blk}} </td>
+                <td>{{row.tov}}</td>
+                <td>{{row.ftp}}</td>
+                <td>{{row.fg}} </td>
+                <td>{{row.number_3pp}} </td>
+                <td>{{row.ps_g}} </td>
+            </tr>
+            </tbody>
+            {% endfor %}
+         </table>
+
+        </div>
+
+
+        <div class="kf_overview kf_current_match_wrap">
+                                <!--Heading 1 Start-->
+                                <h6 class="kf_hd1 margin_0">
+                                    <span>上一场比赛</span>
+                                </h6>
+                                <!--Heading 1 End-->
+                                <!--Kf Opponents Outer Start-->
+                                <div class="kf_opponents_outerwrap">
+                                    <h3 class="kf_h4">
+                                        {{game.detail}}
+                                    </h3>
+                                    <em class="kf_h4">{{game.date}}</em>
+                                    <!--Kf Opponents Start-->
+                                    <div class="kf_opponents_wrap">
+                                        <div class="kf_opponents_dec">
+                                            <img src="{% static 'team_img/' %}{{h_id}}.png" style="width: 100px;height: 100px;float: left" alt="">
+                                            <div class="text">
+                                                <h3><a href="#">{{game.home}}</a></h3>
+                                                <p>主队</p>
+                                            </div>
+                                        </div>
+                                        <div class="kf_opponents_gols">
+                                            <h5><span>{{game.h_score}}</span><span>-{{game.a_score}}</span></h5>
+                                            <p>Final score</p>
+                                        </div>
+                                        <div class="kf_opponents_dec span_right">
+                                            <img src="{% static 'team_img/' %}{{a_id}}.png" style="width: 100px;height: 100px; float: right" alt="" >
+                                            <div class="text">
+                                                <h3><a href="#">{{game.away}}</a></h3>
+                                                <p>客队</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Kf Opponents End-->
+                                    <!--Kf Score Card Start-->
+                                    <div class="kf_scorecard">
+                                        <div class="kf_progress_wrap">
+                                            <div class="kf_progress">
+                                                <span class="progress_label">助攻</span>
+                                                <div class="progress">
+                                                  <div class="progress-bar" role="progressbar" aria-valuenow="36" aria-valuemin="0" aria-valuemax="100" style="width: {{game.h_ast}}%;">
+                                                  </div>
+                                                </div>
+                                                <span class="progress_precent">{{game.h_ast}}</span>
+                                            </div>
+                                            <div class="kf_progress">
+                                                <span class="progress_label">篮板</span>
+                                                <div class="progress">
+                                                  <div class="progress-bar" role="progressbar" aria-valuenow="18" aria-valuemin="0" aria-valuemax="100" style="width: {{game.h_trb}}%;">
+                                                  </div>
+                                                </div>
+                                                <span class="progress_precent">{{game.h_trb}}</span>
+                                            </div>
+                                            <div class="kf_progress">
+                                                <span class="progress_label">抢断</span>
+                                                <div class="progress">
+                                                  <div class="progress-bar" role="progressbar" aria-valuenow="24" aria-valuemin="0" aria-valuemax="100" style="width: {{game.h_stl}}%;">
+                                                  </div>
+                                                </div>
+                                                <span class="progress_precent">{{game.h_stl}}</span>
+                                            </div>
+                                            <div class="kf_progress">
+                                                <span class="progress_label">盖帽</span>
+                                                <div class="progress">
+                                                  <div class="progress-bar" role="progressbar" aria-valuenow="23" aria-valuemin="0" aria-valuemax="100" style="width: {{game.h_blk}}%;">
+                                                  </div>
+                                                </div>
+                                                <span class="progress_precent">{{game.h_blk}}</span>
+                                            </div>
+                                            <div class="kf_progress">
+                                                <span class="progress_label">失误</span>
+                                                <div class="progress">
+                                                  <div class="progress-bar" role="progressbar" aria-valuenow="23" aria-valuemin="0" aria-valuemax="100" style="width: {{game.h_tov}}%;">
+                                                  </div>
+                                                </div>
+                                                <span class="progress_precent">{{game.h_tov}}</span>
+                                            </div>
+                                            <div class="kf_progress">
+                                                <span class="progress_label">犯规</span>
+                                                <div class="progress">
+                                                  <div class="progress-bar" role="progressbar" aria-valuenow="23" aria-valuemin="0" aria-valuemax="100" style="width: {{game.h_fou}}%;">
+                                                  </div>
+                                                </div>
+                                                <span class="progress_precent">{{game.h_fou}}</span>
+                                            </div>
+
+                                        </div>
+                                        <ul class="kf_table2">
+                                            <li>
+                                                <div class="table_info">
+                                                    <span><b>球队</b></span>
+                                                </div>
+                                                <div class="table_info">
+                                                    <span><b>第一节</b></span>
+                                                </div>
+                                                <div class="table_info">
+                                                    <span><b>第二节</b></span>
+                                                </div>
+                                                <div class="table_info">
+                                                    <span><b>第三节</b></span>
+                                                </div>
+                                                <div class="table_info">
+                                                    <span><b>第四节</b></span>
+                                                </div>
+                                                <div class="table_info">
+                                                    <span><b>总分</b></span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="table_info">
+                                                    <span><b>{{game.home}} </b></span>
+                                                </div>
+                                                <div class="table_info">
+                                                    <span>{{game.h_1}}</span>
+                                                </div>
+                                                <div class="table_info">
+                                                    <span>{{game.h_2}}</span>
+                                                </div>
+                                                <div class="table_info">
+                                                    <span>{{game.h_3}}</span>
+                                                </div>
+                                                <div class="table_info">
+                                                    <span>{{game.h_4}}</span>
+                                                </div>
+                                                <div class="table_info">
+                                                    <span><b>{{game.h_score}}</b></span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="table_info">
+                                                    <span><b>{{game.away}}</b></span>
+                                                </div>
+                                                <div class="table_info">
+                                                    <span>{{game.a_1}}</span>
+                                                </div>
+                                                <div class="table_info">
+                                                    <span>{{game.a_2}}</span>
+                                                </div>
+                                                <div class="table_info">
+                                                    <span>{{game.a_3}}</span>
+                                                </div>
+                                                <div class="table_info">
+                                                    <span>{{game.a_4}}</span>
+                                                </div>
+                                                <div class="table_info">
+                                                    <span><b>{{game.a_score}}</b></span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="kf_progress_wrap kf_progress_wrap2">
+                                            <div class="kf_progress">
+                                                <span class="progress_label">助攻</span>
+                                                <div class="progress">
+                                                  <div class="progress-bar" role="progressbar" aria-valuenow="36" aria-valuemin="0" aria-valuemax="100" style="width: {{game.a_ast}}%;">
+                                                  </div>
+                                                </div>
+                                                <span class="progress_precent">{{game.a_ast}}</span>
+                                            </div>
+                                            <div class="kf_progress">
+                                                <span class="progress_label">篮板</span>
+                                                <div class="progress">
+                                                  <div class="progress-bar" role="progressbar" aria-valuenow="18" aria-valuemin="0" aria-valuemax="100" style="width: {{game.a_trb}}%;">
+                                                  </div>
+                                                </div>
+                                                <span class="progress_precent">{{game.a_trb}}</span>
+                                            </div>
+                                            <div class="kf_progress">
+                                                <span class="progress_label">抢断</span>
+                                                <div class="progress">
+                                                  <div class="progress-bar" role="progressbar" aria-valuenow="24" aria-valuemin="0" aria-valuemax="100" style="width: {{game.a_stl}}%;">
+                                                  </div>
+                                                </div>
+                                                <span class="progress_precent">{{game.a_stl}}</span>
+                                            </div>
+                                            <div class="kf_progress">
+                                                <span class="progress_label">盖帽</span>
+                                                <div class="progress">
+                                                  <div class="progress-bar" role="progressbar" aria-valuenow="23" aria-valuemin="0" aria-valuemax="100" style="width: {{game.a_blk}}%;">
+                                                  </div>
+                                                </div>
+                                                <span class="progress_precent">{{game.a_blk}}</span>
+                                            </div>
+                                            <div class="kf_progress">
+                                                <span class="progress_label">失误</span>
+                                                <div class="progress">
+                                                   <div class="progress-bar" role="progressbar" aria-valuenow="23" aria-valuemin="0" aria-valuemax="100" style="width: {{game.a_tov}}%;">
+                                                  </div>
+                                                </div>
+                                                <span class="progress_precent">{{game.a_tov}}</span>
+                                            </div>
+                                            <div class="kf_progress">
+                                                <span class="progress_label">犯规</span>
+                                                <div class="progress">
+                                                  <div class="progress-bar" role="progressbar" aria-valuenow="23" aria-valuemin="0" aria-valuemax="100" style="width: {{game.a_fou}}%;">
+                                                  </div>
+                                                </div>
+                                                <span class="progress_precent">{{game.a_fou}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Kf Score Card End-->
+                                </div>
+                                <!--Kf Opponents Outer End-->
+                            </div>
+    </div>
+</div>
+    {% endblock %}

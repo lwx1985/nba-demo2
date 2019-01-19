@@ -1,0 +1,22 @@
+.my_inline
+{
+	display: inline;
+}
+.my_input_digit{
+
+}
+
+.my_search{
+	margin-bottom: 8px;
+}
+
+.my_rank{
+	margin-right: 30px;
+}
+
+.my_li{
+	display: inline;
+	margin-top: 80px;
+	margin-left: 20px;
+	float: bottom;
+}

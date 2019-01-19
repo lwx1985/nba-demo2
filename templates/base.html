@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> {% block title %} {% endblock %}</title>
+    {%load staticfiles%}
+    <link href="{% static 'css/bootstrap.css' %}"rel="stylesheet" >
+
+    <link href="{% static 'js/dl-menu/component.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/slick.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/slick-theme.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
+
+	<link href="{% static 'css/svg-icons.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/prettyPhoto.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/typography.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/widget.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/shortcodes.css' %}" rel="stylesheet">
+
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/color.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet">
+
+    <link href="{% static 'my_style.css' %}" rel="stylesheet">
+
+
+	<!--<script src="{% static 'js/custom.js' %} "></script> -->
+
+    {% block css %} {% endblock %}
+    {% block s_js %}{% endblock %}
+</head>
+<body>
+
+<div class="kode_wrapper" style="z-index: 9999">
+    <header class="kode_header_2" style="margin-bottom: 50px;  border:1px solid  #f5b601;">
+        <!--Header 2 Top Bar Start-->
+        <!--<div class="kf_top_bar">-->
+            <!--<div class="container">-->
+                <!--<div class="pull-left">-->
+                    <!--<ul class="kf_social2">-->
+                        <!--<li><a href="#"><i class="fa fa-facebook"></i></a></li>-->
+                        <!--<li><a href="#"><i class="fa fa-twitter"></i></a></li>-->
+                        <!--<li><a href="#"><i class="fa fa-rss"></i></a></li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+                <!--<div class="kf_right_dec">-->
+                    <!--<ul class="kf_user">-->
+                        <!--<li><a href="#"><i class="glyphicon glyphicon-plus"></i>注册</a></li>-->
+                        <!--<li><a href="#"><i class="glyphicon glyphicon-user"></i>登录</a></li>-->
+                    <!--</ul>-->
+                    <!--<a href="#" data-toggle="modal" data-target="#search" class="kode_search"><i class="fa fa-search"></i></a>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--Header 2 Top Bar End-->
+        <div class="container">
+            <!--Logo Bar Start-->
+            <div class="kode_logo_bar">
+                <!--Logo Start-->
+                <div class="logo">
+                    <a href="#">
+                        <img src="{% static 'images/logo.jpg' %}" alt="">
+                    </a>
+                </div>
+                <!--Logo Start-->
+                <!--Navigation Wrap Start-->
+                <div>
+                    <!--Navigation Start-->
+                    <ul style="margin-top: 50px">
+                            <li class="my_li"><a href="/player/home">首页</a></li>
+                            <li class="my_li"><a href="/player/home/#best_player">本赛季最好球员</a></li>
+                            <li class="my_li"><a href="/player/home/#team">球队信息查询</a></li>
+							<li class="my_li"><a href="/player/allPlayer/?page=1&order=-ps_g">球员数据搜索</a></li>
+							<li class="my_li"><a href="/player/mapData">球员数据散点图</a></li>
+                    </ul>
+                    <!--DL Menu Start-->
+
+                </div>
+                <!--Navigation Wrap End-->
+            </div>
+            <!--Logo Bar End-->
+        </div>
+    </header>
+
+
+    <!--<div class="kode_banner_1 " style="margin-bottom: 50px">-->
+        <!--<div class="main_banner slick-initialized slick-slider">-->
+            <!--<div aria-live="polite" class="slick-list draggable">-->
+                <!--<div class="slick-track" role="listbox" style="opacity: 1; width: 3294px;"><div class="slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false" tabindex="-1" role="option" aria-describedby="slick-slide20" style="width: 50%; text-align:center; left: 0px; top: 0px; z-index: 999; opacity: 1;">-->
+                <!--&lt;!&ndash;Banner Thumb START&ndash;&gt;-->
+                <!--<div class="thumb">-->
+                    <!--<img src="{% static 'extra-images/bulls.png ' %}" alt="">-->
+                    <!--<div class="container">-->
+                        <!--<div class="banner_caption text-center">-->
+                            <!--<span>圣诞大战 !!</span>-->
+                            <!--<h1>-->
+                                <!--芝加哥公牛 <b>vs</b> 犹他爵士-->
+                            <!--</h1>-->
+                            <!--<p>12月25日 美国 芝加哥 联合中心球馆</p>-->
+                            <!--<a href="#" class="btn-1" tabindex="0">进入NBA官网查看详情</a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                    <!--&lt;!&ndash;Banner Thumb START&ndash;&gt;-->
+            <!--</div>-->
+            <!--</div></div>-->
+        <!--<button type="button" data-role="none" class="slick-next slick-arrow" aria-label="Next" role="button" style="display: inline-block;">Next</button></div>-->
+    <!--</div>-->
+    {% block content %} {% endblock %}
+
+    <div class="copy_right3" style="margin-top: 20px">
+        <div class="container">
+            <p>作者：刘玮昕 福州大学 2015级 软件工程
+            <ul class="kf_social3">
+                <li><i class="glyphicon glyphicon-envelope"></i> 461499820@qq.com</li>
+
+            </ul>
+        </div>
+    </div>
+
+    <script src="{% static 'js/jquery.js' %} "></script>
+
+	<script src="{% static 'js/bootstrap.js' %}"></script>
+
+    <script src="{% static 'js/slick.min.js' %} "></script>
+
+    <script src="{% static 'js/downCount.js' %} "></script>
+
+    <script src="{% static 'js/waypoints-min.js' %} "></script>
+
+    <script src="{% static 'js/dl-menu/modernizr.custom.js' %} "></script>
+
+    <script src="{% static 'js/dl-menu/jquery.dlmenu.js' %} "></script>
+
+    <script src="{% static 'js/jprogress.js'  %} "></script>
+
+    <script src="{% static 'js/jquery.prettyPhoto.js' %} "></script>
+
+    <script src="{% static 'js/echarts.min.js' %}"></script>
+
+</div>
+   {% block js %} {% endblock %}
+</body>
+</html>
+
+
+
+
